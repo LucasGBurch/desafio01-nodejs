@@ -1,0 +1,21 @@
+{
+  "name": "desafio01-nodejs",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Primeiro desafio de node js. API com CRUD de tasks",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LucasGBurch/desafio01-nodejs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LucasGBurch/desafio01-nodejs/issues"
+  },
+  "homepage": "https://github.com/LucasGBurch/desafio01-nodejs#readme"
+}
