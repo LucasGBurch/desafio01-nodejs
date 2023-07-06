@@ -12,7 +12,7 @@ export const routes = [
     handler: (req, res) => {
       const { search } = req.query;
 
-      const users = database.listTask(
+      const tasks = database.listTask(
         'tasks',
         search
           ? {
@@ -38,7 +38,54 @@ export const routes = [
         completed_at: null,
         created_at: dateFormatter.format(new Date()),
         updated_at: dateFormatter.format(new Date()),
-      }
-    }
-  }
+      };
+
+      database.createTask('tasks', task);
+
+      return res.writeHead(201).end();
+    },
+  },
+  {
+    method: 'PUT',
+    path: buildRoutePath('/tasks/:id'),
+    handler: (req, res) => {
+      const { id } = req.params;
+      const { title, description } = req.body;
+
+      database.updateTask('tasks', id, {
+        title,
+        description,
+        updated_at: dateFormatter.format(new Date()),
+      });
+
+      return res.writeHead(204).end();
+    },
+  },
+  {
+    method: 'DELETE',
+    path: buildRoutePath('/tasks/:id'),
+    handler: (req, res) => {
+      const { id } = req.params;
+
+      database.delete('users', id);
+
+      return res.writeHead(204).end();
+    },
+  },
+  {
+    method: 'PATCH',
+    path: buildRoutePath('/tasks/:id/complete'),
+    handler: (req, res) => {
+      const { id } = req.params;
+      const { completed_at } = req.body;
+
+      completed_at
+        ? null
+        : database.updateTaskAsCompleted('tasks', id, {
+            completed_at: dateFormatter.format(new Date()),
+          });
+
+          return res.writeHead(204).end();
+    },
+  },
 ];

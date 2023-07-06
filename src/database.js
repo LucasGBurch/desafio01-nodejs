@@ -52,7 +52,8 @@ export class Database {
   updateTask(table, id, data) {
     const rowIndex = this.#database[table].findIndex((row) => row.id === id);
 
-    if (rowIndex > -1) { // -1 é quando não encontra
+    if (rowIndex > -1) {
+      // -1 é quando não encontra
       this.#database[table][rowIndex] = { id, ...data };
       this.#persist();
     }
@@ -62,14 +63,20 @@ export class Database {
   delete(table, id) {
     const rowIndex = this.#database[table].findIndex((row) => row.id === id);
 
-    if (rowIndex > -1) { // -1 é quando não encontra
+    if (rowIndex > -1) {
+      // -1 é quando não encontra
       this.#database[table].splice(rowIndex, 1);
       this.#persist();
     }
   }
 
-  // PATCH ()
+  // PATCH
   updateTaskAsCompleted(table, id, data) {
-    
+    const rowIndex = this.#database[table].findIndex((row) => row.id === id);
+
+    if (rowIndex > -1) {
+      this.#database[table][rowIndex] = { id, ...data };
+      this.#persist();
+    }
   }
 }

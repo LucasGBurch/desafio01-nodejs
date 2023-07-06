@@ -19,3 +19,5 @@ const server = http.createServer(async (req, res) => {
     return route.handler(req, res);
   }
 });
+
+server.listen(3336);
