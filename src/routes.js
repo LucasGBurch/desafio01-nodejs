@@ -5,6 +5,14 @@ import { dateFormatter } from './utils/formatter.js';
 
 const database = new Database();
 
+function taskExists(id, res) {
+  const [task] = database.listTask('tasks', { id });
+  //console.log(task);
+  if (!task) {
+    return res.writeHead(404).end();
+  }
+}
+
 export const routes = [
   {
     method: 'GET',
@@ -31,6 +39,14 @@ export const routes = [
     handler: (req, res) => {
       const { title, description } = req.body;
 
+      if (!title || !description) {
+        return res
+          .writeHead(400)
+          .end(
+            JSON.stringify({ message: 'title and description are required' })
+          );
+      }
+
       const task = {
         id: randomUUID(),
         title,
@@ -52,6 +68,16 @@ export const routes = [
       const { id } = req.params;
       const { title, description } = req.body;
 
+      if (!title || !description) {
+        return res
+          .writeHead(400)
+          .end(
+            JSON.stringify({ message: 'title and description are required' })
+          );
+      }
+
+      taskExists(id, res); // separei em função, já que é usado 3x
+
       database.updateTask('tasks', id, {
         title,
         description,
@@ -67,7 +93,9 @@ export const routes = [
     handler: (req, res) => {
       const { id } = req.params;
 
-      database.delete('users', id);
+      taskExists(id, res);
+
+      database.delete('tasks', id);
 
       return res.writeHead(204).end();
     },
@@ -78,11 +106,18 @@ export const routes = [
     handler: (req, res) => {
       const { id } = req.params;
 
-      //const [task] = database.listTask('tasks', { id });
-      
-      database.updateTaskAsCompleted('tasks', id, {
-          completed_at: completed_at ? dateFormatter.format(new Date()) : null,
-          })
+      const [task] = database.listTask('tasks', { id });
+
+      taskExists(id, res);
+
+      const isTaskCompleted = !!task.completed_at;
+      const completed_at = isTaskCompleted
+        ? null
+        : dateFormatter.format(new Date());
+
+      database.updateTask('tasks', id, {
+        completed_at,
+      });
 
       return res.writeHead(204).end();
     },
