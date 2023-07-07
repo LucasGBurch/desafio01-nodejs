@@ -1,7 +1,7 @@
-import { Database } from './database';
+import { Database } from './database.js';
 import { randomUUID } from 'node:crypto';
-import { buildRoutePath } from './utils/build-route-path';
-import { dateFormatter } from './utils/formatter';
+import { buildRoutePath } from './utils/build-route-path.js';
+import { dateFormatter } from './utils/formatter.js';
 
 const database = new Database();
 
@@ -77,15 +77,14 @@ export const routes = [
     path: buildRoutePath('/tasks/:id/complete'),
     handler: (req, res) => {
       const { id } = req.params;
-      const { completed_at } = req.body;
 
-      completed_at
-        ? null
-        : database.updateTaskAsCompleted('tasks', id, {
-            completed_at: dateFormatter.format(new Date()),
-          });
+      //const [task] = database.listTask('tasks', { id });
+      
+      database.updateTaskAsCompleted('tasks', id, {
+          completed_at: completed_at ? dateFormatter.format(new Date()) : null,
+          })
 
-          return res.writeHead(204).end();
+      return res.writeHead(204).end();
     },
   },
 ];
