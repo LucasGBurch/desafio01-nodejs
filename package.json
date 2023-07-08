@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/LucasGBurch/desafio01-nodejs/issues"
   },
-  "homepage": "https://github.com/LucasGBurch/desafio01-nodejs#readme"
+  "homepage": "https://github.com/LucasGBurch/desafio01-nodejs#readme",
+  "dependencies": {
+    "csv-parse": "^5.4.0"
+  }
 }
